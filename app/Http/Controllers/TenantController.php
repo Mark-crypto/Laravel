@@ -2,15 +2,99 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
+use App\Models\Problems;
+use App\Models\Requests;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class TenantController extends Controller
 {
     public function index()
     {
-        $tenants = Tenant::all();
-        return view("dashboard", ['tenants' => $tenants]);
+        if (Auth::id()) {
+            $usertype = Auth()->user()->usertype;
+            if ($usertype == 'user') {
+                return view('renters');
+            } else if ($usertype == 'admin') {
+                $tenants = Tenant::all();
+                return view("dashboard", ['tenants' => $tenants]);
+            } else {
+                return redirect()->back();
+            }
+        }
+    }
+    public function getProblems()
+    {
+        $problems = Problems::all();
+        return view("getproblems", ['problems' => $problems]);
+    }
+    public function getAccess()
+    {
+        return view("request");
+    }
+    public function receiveReq()
+    {
+        $requests = Requests::all();
+        return view("display", ['requests' => $requests]);
+    }
+    public function storeAccess(Request $request)
+    {
+        $data = $request->validate([
+            'fname' => 'required',
+            'lname' => 'required',
+            'national_ID' => 'required',
+            'house_no' => 'required',
+            'email' => 'required'
+
+        ]);
+        $newRequest = Requests::create($data);
+        return redirect(route('login'));
+    }
+    // public function index()
+    // {
+    //     $tenants = Tenant::all();
+    //     return view("dashboard", ['tenants' => $tenants]);
+    // }
+    public function rent()
+    {
+        return view("renters");
+    }
+    public function payment()
+    {
+        return view("payment");
+    }
+    public function storePayment(Request $request)
+    {
+        $data = $request->validate([
+            'fname' => 'required',
+            'lname' => 'required',
+            'phoneNo' => 'required',
+            'amount' => 'required',
+            'houseNo' => 'required'
+
+        ]);
+        $newPayment = Payment::create($data);
+        return redirect(route('renters'));
+    }
+    public function problems()
+    {
+        return view("problems");
+    }
+    public function storeProblems(Request $request)
+    {
+        $data = $request->validate([
+            'fname' => 'required',
+            'lname' => 'required',
+            'apartmentNo' => 'required',
+            'issue' => 'required',
+            'information' => 'required'
+
+        ]);
+        $newProblem = Problems::create($data);
+        return redirect(route('renters'));
     }
     public function create()
     {
@@ -66,5 +150,14 @@ class TenantController extends Controller
         fclose($fp);
         $headers = array('Content-Type' => 'text/csv');
         return response()->download($filename, "Tenants.csv", $headers);
+    }
+    public function sendEmail(Requests $request)
+    {
+        //$requests = Requests::all();
+        $email = "mark.onyango@strathmore.edu";
+        $subject = 'APPROVAL TO JOIN MADARAKA APT TENANT SYSTEM';
+        $message = 'Your request has been approved you will receive a password change email within 24 hours.';
+        mail($email, $subject, $message);
+        return redirect(route('receive'));
     }
 }

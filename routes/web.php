@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DarajaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TenantController;
 use Illuminate\Support\Facades\Route;
@@ -23,11 +24,25 @@ Route::get('/report', function () {
     return view('report');
 })->middleware(['auth', 'verified'])->name('report');
 
-Route::get('generateCsv', [TenantController::class, 'generateCsv'])->name('download.csv');
+Route::get('/request-access', [TenantController::class, 'getAccess'])->name('userRequest');
+Route::post('/request-access', [TenantController::class, 'storeAccess'])->name('userRequest.store');
 
+Route::get('generateCsv', [TenantController::class, 'generateCsv'])->name('download.csv');
+Route::post('email', [TenantController::class, 'sendEmail'])->name('email');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [TenantController::class, 'index'])->name('dashboard');
+    //renters
+    Route::get('/renter', [TenantController::class, 'rent'])->name('renters');
+    Route::get('/renter/payment', [TenantController::class, 'payment'])->name('payment');
+    Route::post('/renter/payment', [DarajaController::class, 'index'])->name('payment.store');
+    Route::get('/renter/problems', [TenantController::class, 'problems'])->name('problems');
+    Route::post('/renter', [TenantController::class, 'storeProblems'])->name('problems.store');
+    //end
     Route::get('/dashboard', [TenantController::class, 'index'])->name('dashboard');
+    Route::get('/problem', [TenantController::class, 'getProblems'])->name('retrieveProblems');
+    Route::get('/receive', [TenantController::class, 'receiveReq'])->name('receive');
+
+
     Route::get('/create', [TenantController::class, 'create'])->name('addUsers');
     Route::post('/', [TenantController::class, 'store'])->name('dashboard.store');
     Route::get('/{tenant}/edit', [TenantController::class, 'edit'])->name('dashboard.edit');

@@ -18,6 +18,15 @@
                     <x-nav-link :href="route('addUsers')" :active="request()->routeIs('addUsers')">
                         {{ __('Add New Tenant') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('retrieveProblems')" :active="request()->routeIs('retrieveProblems')">
+                        {{ __('View Tenant Problems') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('receive')" :active="request()->routeIs('receive')">
+                        {{ __('View System Request Access') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
+                        {{ __('Add New System Users') }}
+                    </x-nav-link>
                 </div>
             </div>
 
