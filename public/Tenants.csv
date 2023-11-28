@@ -1,5 +1,5 @@
 "First name","Last name","National ID","House No",Balance
-Cristiano,Ronaldo,100,1A,0
+Cristiano,Ronaldo,100,1A,300
 Kylian,Mbappe,200,1B,7000
 Lionel,Messi,300,2A,1000
 Vinicius,Junior,400,2B,0
@@ -8,5 +8,6 @@ Ngolo,Kante,600,3B,10000
 Marcus,Rashford,700,4A,0
 Kevin,Debruyne,800,4B,2300
 Jadon,Sancho,900,5A,0
-Harry,Kane,200,5B,14000
-Bukayo,Saka,200,6A,100
+Harry,Kane,2000,5B,14000
+Bukayo,Saka,1000,6A,100
+Victor,wanayama,2003,7A,0
