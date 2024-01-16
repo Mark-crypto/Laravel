@@ -31,13 +31,13 @@ Route::get('generateCsv', [TenantController::class, 'generateCsv'])->name('downl
 Route::post('email', [TenantController::class, 'sendEmail'])->name('email');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [TenantController::class, 'index'])->name('dashboard');
-    //renters
+
     Route::get('/renter', [TenantController::class, 'rent'])->name('renters');
     Route::get('/renter/payment', [TenantController::class, 'payment'])->name('payment');
     Route::post('/renter/payment', [DarajaController::class, 'index'])->name('payment.store');
     Route::get('/renter/problems', [TenantController::class, 'problems'])->name('problems');
     Route::post('/renter', [TenantController::class, 'storeProblems'])->name('problems.store');
-    //end
+
     Route::get('/dashboard', [TenantController::class, 'index'])->name('dashboard');
     Route::get('/problem', [TenantController::class, 'getProblems'])->name('retrieveProblems');
     Route::get('/receive', [TenantController::class, 'receiveReq'])->name('receive');
@@ -56,14 +56,3 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-
-// Route::get('/admin', function () {
-//     return view('admin');
-// })->middleware(['auth', 'verified'])->name('admin');
-
-    // Route::get('/dashboard', function () {
-    //     return view('dashboard');
-    // })->middleware(['auth', 'verified'])->name('dashboard');
-    // Route::get('/', function () {
-    //     return view('dashboard');
-    // })->middleware(['auth', 'verified'])->name('dashboard');

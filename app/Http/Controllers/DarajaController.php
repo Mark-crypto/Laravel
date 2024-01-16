@@ -19,10 +19,10 @@ class DarajaController extends Controller
         //--------GENERATING ACCESS TOKENS------------
         //API KEYS
 
-        $consumerKey = "vsgcJd5oyO71VrUCVbBmbvn8aFAAW6xs";
-        $consumerSecret = "5GZKANTw20w6kMhu";
+        $consumerKey = "";
+        $consumerSecret = "";
         //ACCESS URL
-        $access_token_url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
+        $access_token_url = "";
         $headers = ['Content-Type:application/json; charset=utf8'];
         $curl = curl_init($access_token_url);
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -40,18 +40,18 @@ class DarajaController extends Controller
         //INCLUDE THE ACCESS TOKEN FILE
 
         date_default_timezone_set('Africa/Nairobi');
-        $processrequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest';
-        $callbackurl = 'https://abongo.co.ke/mpesa/stkpush.php';
-        $passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-        $BusinessShortCode = '174379';
+        $processrequestUrl = '';
+        $callbackurl = '';
+        $passkey = "";
+        $BusinessShortCode = '';
         $Timestamp = date('YmdHis');
         // ENCRYPT  DATA TO GET PASSWORD
         $Password = base64_encode($BusinessShortCode . $passkey . $Timestamp);
-        $phone = '254726208735'; //phone number to receive the stk push
+        $phone = ''; //phone number to receive the stk push
         $money = $_POST['amount'];
         $PartyA = $_POST['phoneNo'];
         $PartyB = '254708374149';
-        $AccountReference = 'MADARAKA APARTMENT RENT PAYMENT';
+        $AccountReference = '';
         $TransactionDesc = 'stkpush test';
         $Amount = $money;
         $stkpushheader = ['Content-Type:application/json', 'Authorization:Bearer ' . $access_token];
@@ -79,14 +79,15 @@ class DarajaController extends Controller
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
         echo $curl_response = curl_exec($curl);
-        // //ECHO  RESPONSE
+
+        $newPayment = Payment::create($data);
+        return redirect(route('renters'));
+    }
+}
+// //ECHO  RESPONSE
         // $data = json_decode($curl_response);
         // $CheckoutRequestID = $data->CheckoutRequestID;
         // $ResponseCode = $data->ResponseCode;
         // if ($ResponseCode == "0") {
         //     echo "The CheckoutRequestID for this transaction is : " . $CheckoutRequestID;
         // }
-        $newPayment = Payment::create($data);
-        return redirect(route('renters'));
-    }
-}

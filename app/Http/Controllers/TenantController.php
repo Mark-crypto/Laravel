@@ -7,11 +7,11 @@ use App\Models\Problems;
 use App\Models\Requests;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class TenantController extends Controller
 {
+    //Authorization based on the user's role
     public function index()
     {
         if (Auth::id()) {
@@ -26,20 +26,24 @@ class TenantController extends Controller
             }
         }
     }
+    //Getting problems reported by renters
     public function getProblems()
     {
         $problems = Problems::all();
         return view("getproblems", ['problems' => $problems]);
     }
+    //Page to request addition to system
     public function getAccess()
     {
         return view("request");
     }
+    //Admin receives requests to get system access
     public function receiveReq()
     {
         $requests = Requests::all();
         return view("display", ['requests' => $requests]);
     }
+    //Storing details of person making request to join system
     public function storeAccess(Request $request)
     {
         $data = $request->validate([
@@ -53,19 +57,17 @@ class TenantController extends Controller
         $newRequest = Requests::create($data);
         return redirect(route('login'));
     }
-    // public function index()
-    // {
-    //     $tenants = Tenant::all();
-    //     return view("dashboard", ['tenants' => $tenants]);
-    // }
+    // Get list of all renters in system
     public function rent()
     {
         return view("renters");
     }
+    // Form for renters to make payment of rent
     public function payment()
     {
         return view("payment");
     }
+    //Collecting and storing to database information on payment
     public function storePayment(Request $request)
     {
         $data = $request->validate([
@@ -79,10 +81,12 @@ class TenantController extends Controller
         $newPayment = Payment::create($data);
         return redirect(route('renters'));
     }
+    // Admin views problems raised by Renters
     public function problems()
     {
         return view("problems");
     }
+    // Renter's problem raised stored to the database
     public function storeProblems(Request $request)
     {
         $data = $request->validate([
@@ -96,10 +100,12 @@ class TenantController extends Controller
         $newProblem = Problems::create($data);
         return redirect(route('renters'));
     }
+    //Admin can create system users and give permissions
     public function create()
     {
         return view("addUsers");
     }
+    //Information on renters stored in the database
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -114,10 +120,12 @@ class TenantController extends Controller
         $newTenant = Tenant::create($data);
         return redirect(route('dashboard'));
     }
+    //Edit tenant information by Admin
     public function edit(Tenant $tenant)
     {
         return view('edit', ['tenant' => $tenant]);
     }
+    //Update tenant information after editing in the database
     public function update(Tenant $tenant, Request $request)
     {
         $data = $request->validate([
@@ -132,11 +140,13 @@ class TenantController extends Controller
         $tenant->update($data);
         return redirect(route('dashboard')); //->with('Success', 'Tenant updated successfully!!!');
     }
+    //deleting a renter from the system 
     public function destroy(Tenant $tenant)
     {
         $tenant->delete();
         return redirect(route('dashboard'))->with('Success', 'Tenant deleted successfully!!!');
     }
+    //Getting a CSV report from database
     public function generateCsv()
     {
         $tenants = Tenant::all();
@@ -151,13 +161,13 @@ class TenantController extends Controller
         $headers = array('Content-Type' => 'text/csv');
         return response()->download($filename, "Tenants.csv", $headers);
     }
-    public function sendEmail(Requests $request)
-    {
-        //$requests = Requests::all();
-        $email = "mark.onyango@strathmore.edu";
-        $subject = 'APPROVAL TO JOIN MADARAKA APT TENANT SYSTEM';
-        $message = 'Your request has been approved you will receive a password change email within 24 hours.';
-        mail($email, $subject, $message);
-        return redirect(route('receive'));
-    }
 }
+// public function sendEmail(Requests $request)
+// {
+//     //$requests = Requests::all();
+//     $email = "";
+//     $subject = '';
+//     $message = '';
+//     mail($email, $subject, $message);
+//     return redirect(route('receive'));
+// }
