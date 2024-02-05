@@ -80,7 +80,7 @@ class DarajaController extends Controller
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
         echo $curl_response = curl_exec($curl);
 
-        $newPayment = Payment::create($data);
+        Payment::create($data);
         return redirect(route('renters'));
     }
 }

@@ -54,7 +54,7 @@ class TenantController extends Controller
             'email' => 'required'
 
         ]);
-        $newRequest = Requests::create($data);
+        Requests::create($data);
         return redirect(route('login'));
     }
     // Get list of all renters in system
@@ -78,7 +78,7 @@ class TenantController extends Controller
             'houseNo' => 'required'
 
         ]);
-        $newPayment = Payment::create($data);
+        Payment::create($data);
         return redirect(route('renters'));
     }
     // Admin views problems raised by Renters
@@ -97,7 +97,7 @@ class TenantController extends Controller
             'information' => 'required'
 
         ]);
-        $newProblem = Problems::create($data);
+        Problems::create($data);
         return redirect(route('renters'));
     }
     //Admin can create system users and give permissions
@@ -117,7 +117,7 @@ class TenantController extends Controller
             'balance' => 'required',
 
         ]);
-        $newTenant = Tenant::create($data);
+        Tenant::create($data);
         return redirect(route('dashboard'));
     }
     //Edit tenant information by Admin
