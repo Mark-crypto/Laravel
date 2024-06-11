@@ -1,5 +1,6 @@
 # Property Management system
 ## A System To Ease Management of Tenants and their information.
+- To view the live system <a href="https://one.abongo.co.ke"> CLICK HERE </a>
 - This is a property management system built in Laravel. The system ensures secure and organized management of tenant’s information and as well eases the tenant’s payment of rent. The system hopes to achieve a coherent relation between the parties while embracing new technologies.
 - For an in-depth look at the system (on my medium) kindly <a href="https://medium.com/@mark.onyango_95482/a-property-management-system-in-laravel-a4479110b961"> CLICK HERE.</a> 
 
